@@ -1,20 +1,29 @@
 import express from 'express'
 import dotenv from 'dotenv'
-import products from './data/products.js'
+import colors from 'colors'
+import listEndpoints from 'express-list-endpoints'
+import morgan from 'morgan'
+import connectDB from './config/db.js'
+import productRoutes from "./routes/productRouter.js";
+import {notFound, errorHandler} from "./middleware/errorMiddileware.js";
 
 dotenv.config()
 
+connectDB()
+
 const app = express()
+app.use(morgan('combined'));
+// app.use ((req, res, next) => {
+//     console.log('req.originalUrl')
+//     next()
+// })
 
 app.get('/', (req, res) => {
     res.send('API is running...')
 })
-app.get('/api/products', (req, res) => {
-    res.json(products)
-})
-app.get('/api/products/:id', (req, res) => {
-    const product = products.find((p) =>p._id === req.params.id)
-    res.json(product)
-})
-const PORT = process.env.PORT ||5000
-app.listen(PORT, console.log(`Hi mate, Sever is up & running in ${process.env.NODE_ENV} mode on port: ${PORT}`))
+app.use('/api/products', productRoutes)
+app.use (notFound)
+app.use (errorHandler)
+console.log(listEndpoints(app))
+const PORT = process.env.PORT || 5000
+app.listen(PORT, console.log(`Hi mate, Sever is up & running in ${process.env.NODE_ENV} mode on port: ${PORT}`.rainbow.bold))

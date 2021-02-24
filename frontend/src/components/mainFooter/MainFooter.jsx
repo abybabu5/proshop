@@ -2,12 +2,13 @@ import React, {Component} from 'react';
 import {Apple, Shop} from "@material-ui/icons";
 
 import "./MainFooter.css";
+import {Col, Row} from "react-bootstrap";
 
 class MainFooter extends Component {
     render() {
         return (
-            <div className="container-fluid footer">
-                <div className="footer__column">
+            <Row className="container-fluid footer">
+                <Col className="footer__column" sm={12} md={6} lg={4} xl={3}>
                     <div className="footer__heading">Get to Know Us</div>
                     <div><p>About us</p></div>
                     <div><p>Careers</p></div>
@@ -16,7 +17,7 @@ class MainFooter extends Component {
                     <div><p>ProShop Stories</p></div>
                     <div><p>We Cares</p></div>
                     <div><p>Gift a Smile</p></div>
-                </div>
+                </Col>
                 <div className="footer__column">
                     <div className="footer__heading">Connect with Us</div>
                     <div><p>Facebook</p></div>
@@ -50,7 +51,7 @@ class MainFooter extends Component {
                     <button><Shop/><span className="btn__text">Play Store</span></button>
                     <button><Apple/><span className="btn__text">App Store</span></button>
                 </div>
-            </div>
+            </Row>
 
         );
     }

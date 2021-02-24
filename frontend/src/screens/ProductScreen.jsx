@@ -8,7 +8,7 @@ import Loader from "../components/Loader";
 import Message from "../components/Message";
 
 const ProductScreen = ({history, match}) => {
-    const [qty, setQty] = useState(0)
+    const [qty, setQty] = useState(1)
     const dispatch = useDispatch()
     const productDetails = useSelector((state) => state.productDetails)
     const {loading, error, product} = productDetails
@@ -69,7 +69,7 @@ const addToCartHandler = () => {
                                                     Status:
                                                 </Col>
                                                 <Col>
-                                                    <strong>${product.countInStock > 0 ? 'In Stock' : 'Out Of Stock'}</strong>
+                                                    <strong>{product.countInStock > 0 ? 'In Stock' : 'Out Of Stock'}</strong>
                                                 </Col>
                                             </Row>
                                         </ListGroup.Item>

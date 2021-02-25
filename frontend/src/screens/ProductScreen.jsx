@@ -13,13 +13,16 @@ const ProductScreen = ({history, match}) => {
     const productDetails = useSelector((state) => state.productDetails)
     const {loading, error, product} = productDetails
 
+
+
     useEffect(() => {
-        dispatch(listProductsDetails(match.params.id))
+        setTimeout(() => window.scrollTo({top: 0, behavior: "smooth"}),
+        dispatch(listProductsDetails(match.params.id)),  100);
     }, [dispatch, match])
 
-const addToCartHandler = () => {
+    const addToCartHandler = () => {
         history.push(`/cart/${match.params.id}?qty=${qty}`)
-}
+    }
     return (
         <>
             <Link className='btn btn-light my-3' to='/'>
@@ -94,7 +97,7 @@ const addToCartHandler = () => {
                                             <Button
                                                 onClick={addToCartHandler}
                                                 className='btn-block' type='button'
-                                                    disabled={product.countInStock === 0}>
+                                                disabled={product.countInStock === 0}>
                                                 Add To Cart
                                             </Button>
                                         </ListGroup.Item>

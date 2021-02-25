@@ -1,9 +1,11 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, forwardRef} from 'react'
 import {Link} from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
-import {Button, Card, Col, Image, ListGroup, Row, Form} from "react-bootstrap"
-import {addToCart, removeFromCart } from "../actions/cartActions";
+import {Button, Card, Col, Image, ListGroup, Row, Form} from 'react-bootstrap'
+import {addToCart, removeFromCart } from '../actions/cartActions'
+import FlipMove from 'react-flip-move';
 import Message from '../components/Message'
+import Product from "../components/Product";
 
 const CartScreen = ({match, location, history}) => {
     const productId = match.params.id
@@ -28,7 +30,21 @@ const CartScreen = ({match, location, history}) => {
        // console.log('checkout')
         history.push('/login?redirect=shipping')
     }
-    return <Row>
+    const FunctionalArticle = forwardRef((item, ref) => (
+        <div ref={ref}>
+            <Product
+                key={item.cartId}
+                id={item.id}
+                title={item.name}
+                image={item.image}
+                price={item.price}
+                rating={item.rating}
+                {...item}/>
+
+        </div>
+    ));
+
+    return<Row>
         <Col md={8}>
             <h1>Shopping Cart</h1>
             {cartItems.length === 0 ?
@@ -37,6 +53,7 @@ const CartScreen = ({match, location, history}) => {
                     </Message>
                 ) : (
                     <ListGroup variant='flush'>
+                        <FlipMove>
                         {cartItems.map(item => (
                             <ListGroup.Item key={item.product}>
                                 <Row>
@@ -66,6 +83,7 @@ const CartScreen = ({match, location, history}) => {
                                 </Row>
                             </ListGroup.Item>
                         ))}
+                        </FlipMove>
                     </ListGroup>
                 )}
         </Col>

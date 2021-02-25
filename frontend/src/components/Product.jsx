@@ -1,9 +1,11 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {Card} from "react-bootstrap"
 import Rating from '../components/Rating'
 import {Link} from "react-router-dom"
 
 const Product = ({product}) => {
+
+
     return (
         <Card className='my-3 p-3 rounded product-card'>
             <Link to={`/product/${product._id}`}>

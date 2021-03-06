@@ -30,7 +30,7 @@ const CartScreen = ({match, location, history}) => {
        // console.log('checkout')
         history.push('/login?redirect=shipping')
     }
-    const FunctionalArticle = forwardRef((item, ref) => (
+    forwardRef((item, ref) => (
         <div ref={ref}>
             <Product
                 key={item.cartId}

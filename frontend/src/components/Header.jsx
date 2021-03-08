@@ -1,7 +1,7 @@
 import React from 'react'
 import {Route} from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
-import {Navbar, Nav, Container, NavDropdown} from 'react-bootstrap'
+import {Navbar, Nav, Container, NavDropdown, ListGroup} from 'react-bootstrap'
 import {LinkContainer} from 'react-router-bootstrap'
 import SearchBox from "./SearchBox";
 import {logout} from '../actions/userActions';
@@ -9,8 +9,12 @@ import {logout} from '../actions/userActions';
 
 const Header = () => {
     const dispatch = useDispatch()
+
     const userLogin = useSelector(state => state.userLogin)
-    const { userInfo } = userLogin
+    const {userInfo} = userLogin
+
+    const cart = useSelector(state => state.cart)
+    const {cartItems} = cart
 
     const logoutHandler = () => {
         dispatch(logout())
@@ -25,11 +29,20 @@ const Header = () => {
                     </LinkContainer>
                     <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                     <Navbar.Collapse id="basic-navbar-nav">
-                        <Route render={({ history }) => <SearchBox history={history}/>} />
+                        <Route render={({history}) => <SearchBox history={history}/>}/>
                         <Nav className="ml-auto">
                             <LinkContainer to="/cart">
                                 <Nav.Link>
-                                    <i className='fas fa-shopping-cart'></i> Cart
+                                    <div className='header__cart__container'>
+                                        {cartItems.length > 0 && (<div className='header__cart_price'>${cartItems.reduce((acc, item) => acc + item.qty * item.price, 0)
+                                            .toFixed(2)}
+                                        </div>)}
+                                            <div className='header__cart_icon'>
+                                                <i className='fas fa-shopping-cart'/>
+                                                    <strong>{cartItems.length > 0 &&(<div className='header__cart__count'> {cartItems.reduce((acc, item) => acc + item.qty, 0)}</div>)}</strong>
+
+                                            </div>
+                                    </div>
                                 </Nav.Link>
                             </LinkContainer>
                             {userInfo ? (
@@ -41,7 +54,9 @@ const Header = () => {
                                 </NavDropdown>
                             ) : <LinkContainer to="/login">
                                 <Nav.Link>
-                                    <i className='fas fa-user'></i> Sign In
+                                    <div className='header__cart_icon'>
+                                    <i className='fas fa-user'/>
+                                </div>
                                 </Nav.Link>
                             </LinkContainer>}
                             {userInfo && userInfo.isAdmin && (

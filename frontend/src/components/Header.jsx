@@ -1,10 +1,11 @@
 import React from 'react'
 import {Route} from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
-import {Navbar, Nav, Container, NavDropdown, ListGroup} from 'react-bootstrap'
+import {Navbar, Nav, Container, NavDropdown} from 'react-bootstrap'
 import {LinkContainer} from 'react-router-bootstrap'
 import SearchBox from "./SearchBox";
 import {logout} from '../actions/userActions';
+
 
 
 const Header = () => {
@@ -18,6 +19,8 @@ const Header = () => {
 
     const logoutHandler = () => {
         dispatch(logout())
+        // dispatch(resetCart())
+
         // window.location.href= '/'
     }
     return (

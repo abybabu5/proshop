@@ -8,6 +8,7 @@ import { getOrderDetails, payOrder, deliverOrder } from '../actions/orderActions
 import axios from "axios";
 import {PayPalButton} from "react-paypal-button-v2";
 import { ORDER_PAY_RESET, ORDER_DELIVER_RESET } from "../constants/orderConstants";
+import {resetCart} from '../actions/cartActions';
 
 
 const OrderScreen = ({match, history }) => {
@@ -71,6 +72,7 @@ const OrderScreen = ({match, history }) => {
 
     const successPaymentHandler = (paymentResult) => {
         dispatch(payOrder(orderId, paymentResult))
+        dispatch(resetCart())
     }
 
     const deliverHandler = () => {

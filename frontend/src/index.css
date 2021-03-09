@@ -68,8 +68,7 @@ h2 {
     -webkit-box-orient: vertical;
 }
 
-.product-name {
-}
+.product-name
 
 @media only screen and (max-width: 320px) {
     -webkit-line-clamp:
@@ -96,6 +95,21 @@ h2 {
 }
 
 /*------------------------------HEADER-------------------------------------*/
+
+
+.navbar {
+    background: -webkit-linear-gradient(to right, #D39D38, #4DA0B0) !important; /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #D39D38, #4DA0B0) !important; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    box-shadow: 6px 6px 20px rgba(122, 122, 122, 0.212);
+    border-radius: 2 rem;
+    color: white;
+    padding: 1rem;
+    position: relative;
+}
+.nav-item {
+    margin: auto;
+}
+
 .header__cart__container {
     display: flex;
     flex-direction: row;

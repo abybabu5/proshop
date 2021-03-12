@@ -43,6 +43,9 @@ const ProductScreen = ({history, match}) => {
         e.preventDefault()
         dispatch(createProductReview(match.params.id, {rating, comment}))
     }
+    const addToWishListHandler = (id) => {
+        history.push(`/wishlist/${id}`)
+    }
     return (
         <>
             <Link className='btn btn-light my-3' to='/'>
@@ -57,6 +60,9 @@ const ProductScreen = ({history, match}) => {
                             <Meta title={product.name}/>
                             <Row>
                                 <Col md={6}>
+                                    <div className='header__cart__icon__product mx-3' onClick={() => addToWishListHandler(product._id)}>
+                                        <i className='fas fa-heart'/>
+                                    </div>
                                     <Image src={product.image} alt={product.name} fluid/>
                                 </Col>
                                 <Col md={3}>

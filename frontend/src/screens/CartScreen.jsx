@@ -44,7 +44,11 @@ const CartScreen = ({match, location, history}) => {
         </div>
     ));
 
-    return<Row>
+    return (
+        <>    <Link to='/' className='btn btn-light my-3' style={{textUnderline:'none'}}>
+        Go back
+            </Link>
+        <Row>
         <Col md={8}>
             <h1>Shopping Cart</h1>
             {cartItems.length === 0 ?
@@ -108,9 +112,8 @@ const CartScreen = ({match, location, history}) => {
         <Col md={2}>
 
         </Col>
-
     </Row>
-
+            </>)
 }
 
 export default CartScreen;

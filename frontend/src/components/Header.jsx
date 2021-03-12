@@ -7,7 +7,6 @@ import SearchBox from "./SearchBox";
 import {logout} from '../actions/userActions';
 
 
-
 const Header = () => {
     const dispatch = useDispatch()
 
@@ -16,6 +15,9 @@ const Header = () => {
 
     const cart = useSelector(state => state.cart)
     const {cartItems} = cart
+
+    const wishlistStore = useSelector(state => state.productWishList)
+    const {wishlist} = wishlistStore;
 
     const logoutHandler = () => {
         dispatch(logout())
@@ -37,50 +39,63 @@ const Header = () => {
                             <LinkContainer to="/cart">
                                 <Nav.Link>
                                     <div className='header__cart__container'>
-                                        {cartItems.length > 0 && (<div className='header__cart_price'>${cartItems.reduce((acc, item) => acc + item.qty * item.price, 0)
+                                        {cartItems.length > 0 && (<div
+                                            className='header__cart_price'>${cartItems.reduce((acc, item) => acc + item.qty * item.price, 0)
                                             .toFixed(2)}
                                         </div>)}
-                                            <div className='header__cart_icon'>
-                                                <i className='fas fa-shopping-cart'/>
-                                                    <strong>{cartItems.length > 0 &&(<div className='header__cart__count'> {cartItems.reduce((acc, item) => acc + item.qty, 0)}</div>)}</strong>
-
-                                            </div>
+                                        <div className='header__cart_icon'>
+                                            <i className='fas fa-shopping-cart'/>
+                                            <strong>{cartItems.length > 0 && (<div
+                                                className='header__cart__count'> {cartItems.reduce((acc, item) => acc + item.qty, 0)}</div>)}</strong>
+                                        </div>
                                     </div>
                                 </Nav.Link>
                             </LinkContainer>
-                            {userInfo ? (
-                                <NavDropdown title={userInfo.name} id='username'>
-                                    <LinkContainer to='/profile'>
-                                        <NavDropdown.Item>Profile</NavDropdown.Item>
-                                    </LinkContainer>
-                                    <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
-                                </NavDropdown>
-                            ) : <LinkContainer to="/login">
-                                <Nav.Link>
+                                <LinkContainer to='/wishlist'>
+                                    <Nav.Link>
                                     <div className='header__cart_icon'>
+                                        <i className=' fas fa-heart'/>
+                                        <strong>{wishlist.length > 0 &&
+                                        <div className='header__cart__count'>
+                                            {wishlist.reduce((acc, item) => acc + item.qty, 0)}
+                                        </div>}</strong>
+                                    </div>
+                            </Nav.Link>
+                        </LinkContainer>
+                        {userInfo ? (
+                            <NavDropdown title={userInfo.name} id='username'>
+                                <LinkContainer to='/profile'>
+                                    <NavDropdown.Item>Profile</NavDropdown.Item>
+                                </LinkContainer>
+                                <NavDropdown.Item onClick={logoutHandler}>Logout</NavDropdown.Item>
+                            </NavDropdown>
+                        ) : <LinkContainer to="/login">
+                            <Nav.Link>
+                                <div className='header__cart_icon'>
                                     <i className='fas fa-user'/>
                                 </div>
-                                </Nav.Link>
-                            </LinkContainer>}
-                            {userInfo && userInfo.isAdmin && (
-                                <NavDropdown title='Admin' id='adminmenu'>
-                                    <LinkContainer to='/admin/userlist'>
-                                        <NavDropdown.Item>Users</NavDropdown.Item>
-                                    </LinkContainer>
-                                    <LinkContainer to='/admin/productlist'>
-                                        <NavDropdown.Item>Products</NavDropdown.Item>
-                                    </LinkContainer>
-                                    <LinkContainer to='/admin/orderlist'>
-                                        <NavDropdown.Item>Orders</NavDropdown.Item>
-                                    </LinkContainer>
-                                </NavDropdown>
-                            )}
-                        </Nav>
-                    </Navbar.Collapse>
-                </Container>
-            </Navbar>
-        </header>
-    );
+                            </Nav.Link>
+                        </LinkContainer>}
+                        {userInfo && userInfo.isAdmin && (
+                            <NavDropdown title='Admin' id='adminmenu'>
+                                <LinkContainer to='/admin/userlist'>
+                                    <NavDropdown.Item>Users</NavDropdown.Item>
+                                </LinkContainer>
+                                <LinkContainer to='/admin/productlist'>
+                                    <NavDropdown.Item>Products</NavDropdown.Item>
+                                </LinkContainer>
+                                <LinkContainer to='/admin/orderlist'>
+                                    <NavDropdown.Item>Orders</NavDropdown.Item>
+                                </LinkContainer>
+                            </NavDropdown>
+                        )}
+                    </Nav>
+                </Navbar.Collapse>
+            </Container>
+        </Navbar>
+</header>
+)
+    ;
 }
 
 export default Header;

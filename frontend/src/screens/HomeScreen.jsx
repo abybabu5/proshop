@@ -10,7 +10,7 @@ import Meta from '../components/Meta'
 import Message from "../components/Message";
 import {Link} from "react-router-dom";
 
-const HomeScreen = ({match}) => {
+const HomeScreen = ({match, history}) => {
     const keyword = match.params.keyword
     const pageNumber = match.params.pageNumber || 1
 
@@ -21,6 +21,12 @@ const HomeScreen = ({match}) => {
     useEffect(() => {
         dispatch(listProducts(keyword, pageNumber))
     }, [dispatch, keyword, pageNumber])
+
+    const addToWishListHandler = (id) => {
+        history.push(`/wishlist/${id}`)
+        dispatch(addToWishList(productId, qty))
+    }
+
 
     return (
         <>
@@ -38,7 +44,7 @@ const HomeScreen = ({match}) => {
                     <Row>
                         {products.map((product) => (
                             <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-                                <Product product={product}/>
+                                <Product product={product} addToWishList={addToWishListHandler}/>
                             </Col>
                         ))}
                     </Row>

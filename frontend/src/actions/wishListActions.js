@@ -1,7 +1,7 @@
 import axios from "axios";
 import {WISHLIST_ADD_ITEM, WISHLIST_REMOVE_ITEM, WISHLIST_RESET_ITEM} from "../constants/wishListConstants";
 
-export const addToWishList = (id, qty) => async (dispatch, getState) => {
+export const addToWishList = (id, qty, rating) => async (dispatch, getState) => {
     const {data} = await axios.get(`/api/products/${id}`)
 
     dispatch({
@@ -12,7 +12,8 @@ export const addToWishList = (id, qty) => async (dispatch, getState) => {
             image: data.image,
             price: data.price,
             countInStock: data.countInStock,
-            qty: qty
+            qty: qty,
+            rating:rating
         }
     })
     localStorage.setItem('wishList', JSON.stringify(getState().productWishList.wishlist))

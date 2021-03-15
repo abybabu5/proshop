@@ -9,6 +9,7 @@ import {Link} from "react-router-dom";
 
 const RegisterScreen = ({ location, history }) => {
     const [name, setName] = useState('')
+    const [surname, setSurname] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
@@ -32,7 +33,7 @@ const RegisterScreen = ({ location, history }) => {
         if (password !== confirmPassword) {
             setMessage('Password do not match!')
         } else {
-            dispatch(register(name, email, password))
+            dispatch(register(name, surname, email, password))
         }
 
     }
@@ -50,7 +51,16 @@ const RegisterScreen = ({ location, history }) => {
                         placeHolder='Enter name'
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                    ></Form.Control>
+                  />
+                </Form.Group>
+                <Form.Group controlId='surname'>
+                    <Form.Label>Surname</Form.Label>
+                    <Form.Control
+                        type='surname'
+                        placeHolder='Enter surname'
+                        value={surname}
+                        onChange={(e) => setSurname(e.target.value)}
+                    />
                 </Form.Group>
                 <Form.Group controlId='email'>
                     <Form.Label>Email Address</Form.Label>
@@ -59,7 +69,7 @@ const RegisterScreen = ({ location, history }) => {
                         placeHolder='Enter mail'
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                    ></Form.Control>
+                    />
                 </Form.Group>
                 <Form.Group controlId='password'>
                     <Form.Label>password</Form.Label>
@@ -68,7 +78,7 @@ const RegisterScreen = ({ location, history }) => {
                         placeHolder='Enter password'
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                    ></Form.Control>
+                   />
                 </Form.Group>
                 <Form.Group controlId='confirmPassword'>
                     <Form.Label>Confirm Password</Form.Label>
@@ -77,7 +87,7 @@ const RegisterScreen = ({ location, history }) => {
                         placeHolder='Confirm password'
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
-                    ></Form.Control>
+                    />
                 </Form.Group>
                 <Button type='submit' variant='primary'>
                    Register

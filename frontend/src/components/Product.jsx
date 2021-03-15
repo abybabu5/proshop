@@ -2,16 +2,21 @@ import React from 'react'
 import {Card} from "react-bootstrap"
 import Rating from '../components/Rating'
 import {Link} from "react-router-dom"
-import {addToWishList} from "../actions/wishListActions";
+import {addToWishList, removeFromWishList} from "../actions/wishListActions";
 import {useDispatch} from 'react-redux'
 
-const Product = ({product}) => {
+const Product = ({product, checkWishlist}) => {
 
 
     const dispatch = useDispatch()
 
     const addToWishListHandler = (productId) => {
-        dispatch(addToWishList(productId, 1))
+        if (checkWishlist) {
+            dispatch(removeFromWishList (productId))
+        }
+        else {
+            dispatch(addToWishList(productId, 1))
+        }
     }
 
     return (
@@ -20,7 +25,7 @@ const Product = ({product}) => {
                 <Card.Img className='product-img' src={product.image} variant='top'/>
             </Link>
             <div className='header__cart__icon__product' onClick={() => addToWishListHandler(product._id)}>
-                <i className='fas fa-heart'/>
+                {checkWishlist ?  <i className='fas fa-heart' style={{color:'#712b29'}}/> : <i className='fas fa-heart'/>  }
             </div>
             <Card.Body>
                 <Link to={`/product/${product._id}`}>

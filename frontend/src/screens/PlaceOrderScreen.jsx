@@ -50,12 +50,12 @@ const PlaceOrderScreen = ({history}) => {
                     <ListGroup variant='flush'>
                         <ListGroup.Item>
                             <h2>Shipping</h2>
-                            <p>
+                            <p style={{display:'flex', flexDirection:'column'}}>
                                 <strong>Address: </strong>
-                                {cart.shippingAddress.address},
-                                {cart.shippingAddress.city}
-                                {cart.shippingAddress.postalCode},
-                                {cart.shippingAddress.country}
+                                <span>{cart.shippingAddress.address}</span>
+                                <span>{cart.shippingAddress.city}</span>
+                                <span>{cart.shippingAddress.postalCode}</span>
+                                <span>{cart.shippingAddress.country}</span>
                             </p>
                         </ListGroup.Item>
                         <ListGroup.Item>

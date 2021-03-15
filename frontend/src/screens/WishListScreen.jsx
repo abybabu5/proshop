@@ -1,20 +1,21 @@
 import React, {useEffect, forwardRef} from 'react'
 import {Link} from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
-import {Button, Col, Image, ListGroup, Row} from 'react-bootstrap'
+import {Button, Col, Form, Image, ListGroup, Row} from 'react-bootstrap'
 import FlipMove from 'react-flip-move';
 import Message from '../components/Message'
 import Product from "../components/Product";
 import {addToWishList, removeFromWishList} from "../actions/wishListActions";
+import {addToCart} from "../actions/cartActions";
 
-const CartScreen = ({match, location}) => {
+
+const CartScreen = ({match, location, history}) => {
     const productId = match.params.id
 
     const qty = location.search ? Number(location.search.split('=')[1]) : 1
     const dispatch = useDispatch()
 
     const wishlistStore = useSelector(state => state.productWishList)
-
     const {wishlist} = wishlistStore;
 
     useEffect(() => {
@@ -25,9 +26,14 @@ const CartScreen = ({match, location}) => {
 
 
     const removeFromWishListHandler = (id) => {
-        //console.log('remove')
         dispatch (removeFromWishList(id))
     }
+
+    const addToCartHandler = (productId) => {
+        history.push(`/cart/${productId}?qty=${qty}`)
+    }
+
+
     forwardRef((item, ref) => (
         <div ref={ref}>
             <Product
@@ -43,7 +49,7 @@ const CartScreen = ({match, location}) => {
     ));
 
     return<Row>
-        <Col md={8}>
+        <Col md={10}>
             <h1>Wishlist</h1>
             {wishlist.length === 0 ?
                 (<Message>
@@ -61,6 +67,24 @@ const CartScreen = ({match, location}) => {
                                         <Col md={3}> <Link to={`/product/${item.product}`}>{item.name}</Link></Col>
                                         <Col md={2}>${item.price}</Col>
                                         <Col md={2}>
+                                            <Form.Control as='select' value={item.qty} onChange={(e) =>
+                                            dispatch(addToCart(item.product, Number(e.target.value)))}>
+                                            {[...Array(item.countInStock).keys()].map((x) => (
+                                                <option key={x + 1} value={x + 1}>
+                                                    {x + 1}
+                                                </option>
+                                            ))}
+                                        </Form.Control>
+                                        </Col>
+                                        <Col md={2}>
+                                            <Button
+                                                onClick={(e) => addToCartHandler(item.product)}
+                                                className='btn-block' type='button'
+                                                disabled={item.countInStock === 0}>
+                                                Buy now
+                                            </Button>
+                                        </Col>
+                                        <Col md={1}>
                                             <Button
                                                 type='button'
                                                 variant='light'

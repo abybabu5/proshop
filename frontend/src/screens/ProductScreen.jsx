@@ -8,6 +8,8 @@ import Loader from "../components/Loader";
 import Message from "../components/Message";
 import Meta from '../components/Meta'
 import {PRODUCT_CREATE_REVIEW_RESET} from "../constants/productConstants"
+import {addToWishList, removeFromWishList} from "../actions/wishListActions";
+
 
 const ProductScreen = ({history, match}) => {
     const [qty, setQty] = useState(1)
@@ -24,6 +26,9 @@ const ProductScreen = ({history, match}) => {
     const productReviewCreate = useSelector((state) => state.productReviewCreate)
     const {success: successProductReview, error: errorProductReview} = productReviewCreate
 
+    const wishlistStore = useSelector(state => state.productWishList)
+    const {wishlist} = wishlistStore;
+
     useEffect(() => {
         if (successProductReview) {
             alert('Review Submitted')
@@ -31,9 +36,22 @@ const ProductScreen = ({history, match}) => {
             setComment('')
             dispatch({type: PRODUCT_CREATE_REVIEW_RESET})
         }
+
         setTimeout(() => window.scrollTo({top: 0, behavior: "smooth"}),
             dispatch(listProductDetails(match.params.id)), 100);
     }, [dispatch, match, successProductReview])
+
+
+    useEffect(() => {
+        console.log(productDetails)
+        if (productDetails.product.reviews && userInfo && userInfo._id) {
+            const myReview = productDetails.product.reviews.find((r) => userInfo._id === r.user);
+            if (myReview) {
+                setRating(myReview.rating);
+                setComment(myReview.comment);
+            }
+        }
+    }, [productDetails, userInfo]);
 
     const addToCartHandler = () => {
         history.push(`/cart/${match.params.id}?qty=${qty}`)
@@ -43,9 +61,29 @@ const ProductScreen = ({history, match}) => {
         e.preventDefault()
         dispatch(createProductReview(match.params.id, {rating, comment}))
     }
-    const addToWishListHandler = (id) => {
-        history.push(`/wishlist/${id}`)
+    const reviewEditHandler = () => {
+
     }
+    const reviewDeleteHandler = () => {
+        // dispatch(deleteProductReview())
+    }
+
+    const checkWishList = () => {
+        return wishlist.find((item) => {
+            return item.product === match.params.id
+        })
+    }
+
+
+    const addToWishListHandler = () => {
+        if (isInWishlist) {
+            dispatch(removeFromWishList(match.params.id))
+        } else {
+            dispatch(addToWishList(match.params.id, 1))
+        }
+    }
+
+    const isInWishlist = checkWishList(match.params.id)
     return (
         <>
             <Link className='btn btn-light my-3' to='/'>
@@ -60,8 +98,10 @@ const ProductScreen = ({history, match}) => {
                             <Meta title={product.name}/>
                             <Row>
                                 <Col md={6}>
-                                    <div className='header__cart__icon__product mx-3' onClick={() => addToWishListHandler(product._id)}>
-                                        <i className='fas fa-heart'/>
+                                    <div className='header__cart__icon__product mx-3'
+                                         onClick={() => addToWishListHandler(product._id)}>
+                                        {isInWishlist ? <i className='fas fa-heart' style={{color: '#712b29'}}/> :
+                                            <i className='fas fa-heart'/>}
                                     </div>
                                     <Image src={product.image} alt={product.name} fluid/>
                                 </Col>
@@ -140,10 +180,18 @@ const ProductScreen = ({history, match}) => {
                                     <ListGroup variant='flush'>
                                         {product.reviews.map(review => (
                                             <ListGroup.Item key={review._id}>
-                                                <strong>{review.name}</strong>
-                                                <Rating value={review.rating}/>
-                                                <p>{review.createdAt.substring(0, 10)}</p>
-                                                <p>{review.comment}</p>
+                                                <div style={{display:'flex', flexDirection:'row', justifyContent: "space-between"}} >
+                                                    <div>
+                                                        <strong>{review.name}</strong>
+                                                        <Rating value={review.rating}/>
+                                                        <p>{review.createdAt.substring(0, 10)}</p>
+                                                        <p>{review.comment}</p></div>
+                                                    {userInfo &&
+                                                    <div>
+                                                        <span style={{margin:'5px', cursor:'pointer'}} onClick={reviewEditHandler}><i className='fas fa-edit '/></span>
+                                                        <span style={{margin:'5px', cursor:'pointer'}} onClick={reviewDeleteHandler}><i className='fas fa-trash'/></span>
+                                                    </div>}
+                                                </div>
                                             </ListGroup.Item>
                                         ))}
                                         <ListGroup.Item>
@@ -167,7 +215,7 @@ const ProductScreen = ({history, match}) => {
                                                     <Form.Label>Comment</Form.Label>
                                                     <Form.Control as='textarea' row='3' value={comment}
                                                                   onChange={(e) => setComment(e.target.value)}
-                                                    ></Form.Control>
+                                                    />
                                                 </Form.Group>
                                                 <Button type='submit' variant='primary'>
                                                     Submit

@@ -98,11 +98,18 @@ const createProductReview = asyncHandler(async (req, res) => {
     const {rating, comment} = req.body
     const product = await Product.findById(req.params.id)
     if (product) {
-        const alreadyReviewed = product.reviews.find(r => r.user.toString() === req.user._id.toString())
-        if (alreadyReviewed) {
-            res.status(400)
-            throw new Error('Product already reviewed')
-        }
+        let alreadyReviewed = product.reviews.findIndex(r => r.user.toString() === req.user._id.toString())
+        if (alreadyReviewed>=0) {
+            const review = {
+                name: req.user.name,
+                rating: Number(rating),
+                comment,
+                user: req.user._id
+            }
+            product.reviews[alreadyReviewed] = review;
+            product.save();
+            res.status(201).json({message: 'Review changed'})
+        } else {
         const review = {
             name: req.user.name,
             rating: Number(rating),
@@ -114,11 +121,57 @@ const createProductReview = asyncHandler(async (req, res) => {
         product.rating = product.reviews.reduce((acc, item) => item.rating + acc, 0) / product.reviews.length
         await product.save()
         res.status(201).json({message: 'Review added'})
+        }
     } else {
         res.status(404)
         throw new Error('Product not found')
     }
 })
+
+//@desc Update the review
+//@route PUT /api/products/:id/reviews
+//@access Private
+const updateProductReview = asyncHandler(async (req, res) => {
+    const {rating, comment} = req.body
+    const product = await Product.findById(req.params.id)
+    if (product) {
+        const review = product.reviews.find(r => r.user.toString() === req.user._id.toString())
+        if (review) {
+            review.name = req.user.name,
+            review.rating = req.body.rating,
+            review.comment = req.body.comment
+            await product.save();
+            res.status(200).send().json({message: 'Review updated'})
+        }
+        else {
+            res.status(404)
+            throw new Error('Review not found')
+        }
+    }  else {
+        res.status(404)
+        throw new Error('Product not found')
+    }
+})
+
+//@desc Delete a review
+//@route DELETE /api/products/:id/reviews
+//@access Private/Admin
+const deleteReview = asyncHandler(async (req, res) => {
+    const product = await Product.findById(req.params.id)
+    if (product) {
+        const reviews = product.reviews.filter(r => r.user.toString() !== req.user._id.toString())
+        if (reviews) {
+            product.reviews = reviews
+            await product.save()
+            res.json({message: 'Review removed'})
+        } else {
+            res.status(404)
+            throw  new Error('Product not found')
+        }
+    }
+    res.status(500).send("ERROR")
+})
+
 
 //@desc Get top rated products
 //@route POST /api/products/top
@@ -135,6 +188,8 @@ export {
     updateProduct,
     createProduct,
     createProductReview,
+    updateProductReview,
+    deleteReview,
     getTopProducts
 
 }

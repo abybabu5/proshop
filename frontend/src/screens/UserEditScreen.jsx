@@ -12,6 +12,7 @@ const UserEditScreen = ({ match, history }) => {
     const userId = match.params.id
 
     const [name, setName] = useState('')
+    const [surname, setSurname] = useState('')
     const [email, setEmail] = useState('')
     const [isAdmin, setIsAdmin] = useState('false')
 
@@ -33,6 +34,7 @@ const UserEditScreen = ({ match, history }) => {
                 dispatch(getUserDetails(userId))
             } else {
                 setName(user.name)
+                setSurname(user.surname)
                 setEmail(user.email)
                 setIsAdmin(user.isAdmin)
             }
@@ -41,7 +43,7 @@ const UserEditScreen = ({ match, history }) => {
 
     const submitHandler = (e) => {
         e.preventDefault()
-        dispatch(updateUser({_id: userId, name, email, isAdmin}))
+        dispatch(updateUser({_id: userId, name, surname, email, isAdmin}))
     }
     return (
         <>
@@ -63,6 +65,15 @@ const UserEditScreen = ({ match, history }) => {
                                     onChange={(e) => setName(e.target.value)}
                                 />
                             </Form.Group>
+                        <Form.Group controlId='surname'>
+                            <Form.Label>Surname</Form.Label>
+                            <Form.Control
+                                type='surname'
+                                placeHolder='Enter surname'
+                                value={surname}
+                                onChange={(e) => setSurname(e.target.value)}
+                            />
+                        </Form.Group>
                             <Form.Group controlId='email'>
                                 <Form.Label>Email Address</Form.Label>
                                 <Form.Control

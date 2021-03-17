@@ -100,7 +100,8 @@ h2 {
     background: linear-gradient(to right, #D39D38, #4DA0B0) !important; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     box-shadow: 6px 6px 20px rgba(122, 122, 122, 0.212);
     color: white;
-    padding: 0rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
     position: relative;
 }
 
@@ -151,6 +152,7 @@ h2 {
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
+    margin: -40px;
 }}
 .nav-item {
     align-items: center;
@@ -203,7 +205,7 @@ header__cart__icon__product__filled {
     color: brown;
     padding: 5px;
     border-radius: 50%;
-    width: 35px;
+    max-width: 35px;
     text-align: center;
     right: 20px;
     top: 20px;

@@ -100,7 +100,7 @@ h2 {
     background: linear-gradient(to right, #D39D38, #4DA0B0) !important; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     box-shadow: 6px 6px 20px rgba(122, 122, 122, 0.212);
     color: white;
-    padding: 1rem;
+    padding: 0rem;
     position: relative;
 }
 
@@ -115,9 +115,13 @@ h2 {
 }
 
 .header__cart_price {
-
     font-size: 12px;
-    padding-top: 20px;
+    border: 2px solid #9c7e31;
+    border-radius: 9%;
+    padding: 5px;
+    background-color: brown;
+    margin-top: 50px;
+    margin-right: -2px;
 }
 
 .header__cart_icon {
@@ -125,17 +129,29 @@ h2 {
     border: 4px solid;
     padding: 10px;
     border-radius: 50%;
-    width: 45px;
+    width: 50px;
     text-align: center;
 }
 
 .header__cart__count {
     position: absolute;
-    top: -8px;
-    right: -10px;
+    top: -40px;
+    right: -18px;
+    border: 2px solid #9c7e31;
+    background-color: brown;
+    padding: 5px 10px;
+    margin-top: 10px;
+    border-radius: 55%;
 
 }
 
+@media (min-width: 992px)
+{
+.navbar-expand-lg .navbar-nav {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}}
 .nav-item {
     align-items: center;
 }
@@ -184,8 +200,7 @@ Nav.Link {
 
 header__cart__icon__product__filled {
     position: absolute;
-    color: #712b29;
-    border: 2px solid;
+    color: brown;
     padding: 5px;
     border-radius: 50%;
     width: 35px;

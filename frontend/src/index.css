@@ -100,11 +100,12 @@ h2 {
     background: linear-gradient(to right, #D39D38, #4DA0B0) !important; /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     box-shadow: 6px 6px 20px rgba(122, 122, 122, 0.212);
     color: white;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+    padding: 2rem;
     position: relative;
 }
-
+.navbar-nav {
+    align-items: center;
+}
 .nav-item {
     margin: auto;
 }
@@ -161,8 +162,6 @@ Nav.Link {
     color: white !important;
 }
 .input__filed {
-
-
     border-radius: 4px;
     border: 1px solid #d1d1d1;
     box-shadow: inset 1px 2px 8px rgba(0, 0, 0, 0.07);
@@ -177,6 +176,12 @@ Nav.Link {
     transition: .18s ease-out;
 }
 
+@media only screen and (min-width: 321px) and (max-width: 768px) {
+    .input__filed {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+}
 .input__filed:hover {
     box-shadow: inset 1px 2px 8px rgba(0, 0, 0, 0.02);
 }
@@ -193,24 +198,27 @@ Nav.Link {
     border: 2px solid;
     padding: 5px;
     border-radius: 50%;
-    width: 35px;
+    min-width: 35px;
     text-align: center;
     right: 20px;
     top: 20px;
     cursor: pointer;
+    align-items: center;
 }
-
-header__cart__icon__product__filled {
+.header__cart__icon__product__filled {
     position: absolute;
     color: brown;
+    border: 2px solid;
     padding: 5px;
     border-radius: 50%;
-    max-width: 35px;
+    min-width: 35px;
     text-align: center;
     right: 20px;
     top: 20px;
     cursor: pointer;
+    align-items: center;
 }
+
 /*-------------------------------FOOTER-------------------------------------*/
 .footer {
     display: flex;

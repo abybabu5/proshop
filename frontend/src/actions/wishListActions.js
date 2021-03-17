@@ -27,7 +27,7 @@ export const removeFromWishList = (id) => (dispatch, getState) => {
     localStorage.setItem('wishList', JSON.stringify(getState().productWishList.wishlist))
 }
 
-export const resetWishList = (id) => (dispatch, getState) => {
+export const resetWishList = (id) => (dispatch) => {
     dispatch({
         type: WISHLIST_RESET_ITEM,
         payload: id

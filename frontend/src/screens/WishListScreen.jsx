@@ -43,6 +43,7 @@ const CartScreen = ({match, location, history}) => {
                 image={item.image}
                 price={item.price}
                 rating={item.rating}
+                qty={item.qty}
                 {...item}/>
 
         </div>
@@ -64,8 +65,8 @@ const CartScreen = ({match, location, history}) => {
                                         <Col md={2}>
                                             <Image src={item.image} alt={item.name} fluid rounded/>
                                         </Col>
-                                        <Col md={3}> <Link to={`/product/${item.product}`}>{item.name}</Link></Col>
-                                        <Col md={2}>${item.price}</Col>
+                                        <Col md={3} className='m-auto'> <Link to={`/product/${item.product}`}>{item.name}</Link></Col>
+                                        <Col md={2} className='m-auto'>${item.price}</Col>
                                         <Col md={2}>
                                             <Form.Control as='select' value={item.qty} onChange={(e) =>
                                             dispatch(addToCart(item.product, Number(e.target.value)))}>
@@ -76,7 +77,7 @@ const CartScreen = ({match, location, history}) => {
                                             ))}
                                         </Form.Control>
                                         </Col>
-                                        <Col md={2}>
+                                        <Col md={2} className='m-auto'>
                                             <Button
                                                 onClick={(e) => addToCartHandler(item.product)}
                                                 className='btn-block' type='button'
@@ -84,7 +85,7 @@ const CartScreen = ({match, location, history}) => {
                                                 Buy now
                                             </Button>
                                         </Col>
-                                        <Col md={1}>
+                                        <Col md={1} className='m-auto'>
                                             <Button
                                                 type='button'
                                                 variant='light'

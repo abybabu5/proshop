@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {LinkContainer} from "react-router-bootstrap";
 import {listProducts, deleteProduct, createProduct } from "../actions/productActions";
 import {Table, Button, Row, Col} from "react-bootstrap";
-import Loader from "../components/Loader";
+import Loader from "../loaders/Loader";
 import Message from "../components/Message";
 import Paginate from "../components/Paginate";
 import {PRODUCT_CREATE_RESET} from "../constants/productConstants";

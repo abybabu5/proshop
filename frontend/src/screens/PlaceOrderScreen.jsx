@@ -5,6 +5,8 @@ import {Button, Card, Col, Image, ListGroup, Row} from "react-bootstrap";
 import Message from "../components/Message";
 import {Link} from "react-router-dom";
 import { createOrder } from '../actions/orderActions'
+import {ORDER_CREATE_RESET, ORDER_PAY_RESET} from "../constants/orderConstants";
+
 
 
 const PlaceOrderScreen = ({history}) => {
@@ -26,7 +28,7 @@ const PlaceOrderScreen = ({history}) => {
 
     useEffect(() => {
         if (success) {
-            // eslint-disable-next-line
+            console.log("*****", order._id)
             history.push(`/order/${order._id}`)
         }
     },[history, success, order])

@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import Message from "../components/Message";
-import Loader from "../components/Loader";
+import Loader from "../loaders/Loader";
 import {login} from "../actions/userActions";
 import FormContainer from "../components/FormContainer";
 import {Button, Col, Form, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
+import LoaderPayment from "../loaders/LoaderPayment";
 
 const LoginScreen = ({ location, history }) => {
     const [email, setEmail] = useState('')
@@ -19,7 +20,7 @@ const LoginScreen = ({ location, history }) => {
     const redirect = location.search ? location.search.split('=')[1] : '/'
 
     useEffect(() => {
-        if (userInfo) {
+        if (userInfo && userInfo.name) {
             history.push(redirect)
         }
     }, [history, userInfo, redirect])

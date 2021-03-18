@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import Message from "../components/Message";
-import Loader from "../components/Loader";
+import Loader from "../loaders/Loader";
 import {getUserDetails, updateUserProfile} from "../actions/userActions";
 import {listMyOrders} from "../actions/orderActions"
 import { Button, Col, Form, Row, Table} from "react-bootstrap";

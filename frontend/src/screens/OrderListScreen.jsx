@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {LinkContainer} from "react-router-bootstrap";
 import { listOrders } from "../actions/orderActions";
 import { Table, Button } from "react-bootstrap";
-import Loader from "../components/Loader";
+import Loader from "../loaders/Loader";
 import Message from "../components/Message";
 
 

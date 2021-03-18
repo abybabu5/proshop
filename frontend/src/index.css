@@ -28,6 +28,12 @@ h1 {
     font-size: 1.8rem;
     padding: 1rem 0;
 }
+@media only screen and (min-width: 321px) and (max-width: 768px) {
+    h1 {
+        font-size: 1rem;
+        padding: 1rem 0;
+    }
+}
 
 h2 {
     font-size: 1.4rem;

@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import Loader from "../components/Loader";
+import Loader from "../loaders/Loader";
 import {Button, Card, Col, Image, ListGroup, Row} from "react-bootstrap";
 import Message from "../components/Message";
 import {Link} from "react-router-dom";
 import { getOrderDetails, payOrder, deliverOrder } from '../actions/orderActions'
 import axios from "axios";
 import {PayPalButton} from "react-paypal-button-v2";
-import { ORDER_PAY_RESET, ORDER_DELIVER_RESET } from "../constants/orderConstants";
+import {ORDER_PAY_RESET, ORDER_DELIVER_RESET, ORDER_CREATE_RESET} from "../constants/orderConstants";
 import {resetCart} from '../actions/cartActions';
+import LoaderPayment from "../loaders/LoaderPayment";
 
 
 const OrderScreen = ({match, history }) => {
@@ -39,12 +40,16 @@ const OrderScreen = ({match, history }) => {
         order.itemsPrice = addDecimals(
             order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0)
         )
+
     }
 
 
     useEffect(() => {
         if(!userInfo) {
             history.push('/login')
+        }
+        if (order && orderId !== order._id) {
+            dispatch(getOrderDetails(orderId))
         }
         const addPayPalScript = async () => {
             const {data: clientId} = await axios.get('/api/config/paypal')
@@ -53,13 +58,14 @@ const OrderScreen = ({match, history }) => {
             script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`
             script.async = true
             script.onload = () => {
-                setSdkReady(true)
+                 setSdkReady(true)
             }
             document.body.appendChild(script)
         }
         if (!order || successPay || successDeliver) {
             dispatch({type: ORDER_PAY_RESET})
             dispatch({type: ORDER_DELIVER_RESET})
+            dispatch({type: ORDER_CREATE_RESET})
             dispatch(getOrderDetails(orderId))
         } else if (!order.isPaid) {
             if (!window.paypal) {
@@ -78,7 +84,7 @@ const OrderScreen = ({match, history }) => {
     const deliverHandler = () => {
         dispatch(deliverOrder(order))
     }
-    return loading ? <Loader/> : error ? <Message variant='danger'>{error}</Message> : <>
+    return loading ? <LoaderPayment/> : error ? <Message variant='danger'>{error}</Message> : <>
         <h1>Order {order._id}</h1>
         <Row>
             <Col md={8}>

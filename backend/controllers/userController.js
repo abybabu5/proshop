@@ -70,8 +70,8 @@ const registerUser = asyncHandler(async (req, res) => {
         <h1>Hello ${user.name}, </h1>
         <p>Thanks for registering on our site</p>
         <p>Please click the link bellow to verify and activate your Proshop account</p>
-        <a href="http://${req.headers.host}/verify-email?token=${user.emailToken}"> Verify your account 
-        <strong>Enjoy virtual shopping experience 🚀🚀🚀</strong>`
+        <a href="http://${req.headers.host}/verify-email?token=${user.emailToken}"> Verify your account<a/>
+        <strong> & Enjoy virtual shopping experience 🚀🚀🚀</strong>`
 
             }
             sgMail.send(msg)

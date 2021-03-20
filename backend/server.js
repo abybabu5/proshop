@@ -12,6 +12,8 @@ import userRoutes from "./routes/userRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
 import wishListRoutes from "./routes/wishListRoutes.js";
+import {verifyEmail} from "./controllers/userController.js";
+import router from "./routes/userRoutes.js";
 
 dotenv.config()
 
@@ -29,6 +31,7 @@ app.use('/api/orders', orderRoutes)
 app.use('/api/upload', uploadRoutes)
 app.use('/api/wishlist', wishListRoutes)
 
+app.get('/verify-email', verifyEmail)
 app.get('/api/config/paypal', (req, res) =>
     res.send(process.env.PAYPAL_CLIENT_ID)
 )

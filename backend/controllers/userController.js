@@ -1,7 +1,13 @@
 import asyncHandler from 'express-async-handler'
 import User from '../models/userModel.js'
 import generateToken from '../utils/generateToken.js'
+import crypto from 'crypto'
+import sgMail from "@sendgrid/mail";
+import dotenv from 'dotenv'
 
+
+dotenv.config()
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 //@desc GET user profile
 //@route GET /api/users/login
@@ -34,11 +40,13 @@ const registerUser = asyncHandler(async (req, res) => {
         res.status(400)
         throw new Error('User already exists')
     }
+    const emailToken = crypto.randomBytes(64).toString('hex')
     const user = await User.create({
         name,
         surname,
         email,
         password,
+        emailToken
     })
 
     if (user) {
@@ -48,13 +56,69 @@ const registerUser = asyncHandler(async (req, res) => {
             surname: user.surname,
             email: user.email,
             isAdmin: user.isAdmin,
-            token: generateToken(user._id)
+            token: generateToken(user._id),
+            isVerified: false
         })
+        try {
+            const msg = {
+                to: user.email,
+                from: "abyproshopfromtwilio@gmail.com",
+                subject: "Welcome to Aby's Proshop, verify your email",
+                text: `click the following link to activate your Proshop account and enjoy virtual shopping experience
+           http://${req.headers.host}/verify-email?token=${user.emailToken}`,
+                html: `
+        <h1>Hello ${user.name}, </h1>
+        <p>Thanks for registering on our site</p>
+        <p>Please click the link bellow to verify and activate your Proshop account</p>
+        <a href="http://${req.headers.host}/verify-email?token=${user.emailToken}"> Verify your account /a>
+        <strong>Enjoy virtual shopping experience 🚀🚀🚀</strong>`
+
+            }
+            sgMail.send(msg)
+                .then(() => {
+                    console.log('Email sent')
+                })
+                .catch((error) => {
+                    console.error(error)
+                })
+            //req.send('success', 'Thanks for registering. Please check your email to verify your account.')
+            res.redirect('/')
+        } catch (error) {
+            console.log(error)
+            //req.send('error', 'Something went wrong. Please try again later or contact us at abyproshopfromtwilio@gmail.com for assistance')
+            res.redirect('/')
+        }
+
     } else {
         res.status(400)
         throw new Error('Invalid user data')
     }
 })
+
+//@desc Verify Email
+//@route GET /verify-email
+//@access Public
+const verifyEmail = asyncHandler(async (req, res, next) => {
+    const user = await User.findOne({emailToken: req.query.token})
+    if (!user) {
+        // req.send('error', 'Invalid Token. Please contact us for assistance')
+        return res.redirect('/error')
+    }
+    //user.emailToken = null
+    user.isVerified = true
+    await user.save()
+
+    const redirectUrl = '/'
+
+    res.redirect(redirectUrl)
+
+    if (err) {
+        res.status(404)
+        throw new Error('User not found')
+    }
+
+})
+
 
 //@desc GET user profile
 //@route GET /api/users/profile
@@ -166,5 +230,15 @@ const updateUser = asyncHandler(async (req, res) => {
 
 })
 
-export {authUser, getUserProfile, registerUser, updateUserProfile, getUsers, deleteUser, getUserById, updateUser}
+export {
+    authUser,
+    getUserProfile,
+    registerUser,
+    updateUserProfile,
+    getUsers,
+    deleteUser,
+    getUserById,
+    updateUser,
+    verifyEmail
+}
 

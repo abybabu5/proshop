@@ -70,7 +70,7 @@ const registerUser = asyncHandler(async (req, res) => {
         <h1>Hello ${user.name}, </h1>
         <p>Thanks for registering on our site</p>
         <p>Please click the link bellow to verify and activate your Proshop account</p>
-        <a href="http://${req.headers.host}/verify-email?token=${user.emailToken}"> Verify your account<a/>
+        <a href="http://abyproshopapp.herokuapp.com/verify-email?token=${user.emailToken}"> Verify your account<a/>
         <strong> & Enjoy virtual shopping experience 🚀🚀🚀</strong>`
 
             }
@@ -81,7 +81,7 @@ const registerUser = asyncHandler(async (req, res) => {
                 .catch((error) => {
                     console.error(error)
                 })
-            res.redirect('/')
+            res.redirect('/login')
         } catch (error) {
             console.log(error)
             //req.send('error', 'Something went wrong. Please try again later or contact us at abyproshopfromtwilio@gmail.com for assistance')

@@ -5,7 +5,6 @@ import {Button, Card, Col, Image, ListGroup, Row} from "react-bootstrap";
 import Message from "../components/Message";
 import {Link} from "react-router-dom";
 import { createOrder } from '../actions/orderActions'
-import {ORDER_CREATE_RESET, ORDER_PAY_RESET} from "../constants/orderConstants";
 
 
 

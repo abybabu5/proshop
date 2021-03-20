@@ -1,12 +1,12 @@
 import React, {useEffect, forwardRef} from 'react'
 import {Link} from 'react-router-dom'
 import {useDispatch, useSelector} from 'react-redux'
-import {Button, Col, Form, Image, ListGroup, Row} from 'react-bootstrap'
+import {Button, Col, Image, ListGroup, Row} from 'react-bootstrap'
 import FlipMove from 'react-flip-move';
 import Message from '../components/Message'
 import Product from "../components/Product";
 import {addToWishList, removeFromWishList} from "../actions/wishListActions";
-import {addToCart} from "../actions/cartActions";
+
 
 
 const CartScreen = ({match, location, history}) => {

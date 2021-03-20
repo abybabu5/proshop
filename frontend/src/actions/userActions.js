@@ -17,8 +17,6 @@ import {
 } from "../constants/userConstants";
 import axios from "axios";
 import {ORDER_LIST_MY_RESET} from "../constants/orderConstants";
-import {WISHLIST_RESET_ITEM} from "../constants/wishListConstants";
-import {CART_RESET_ITEM} from "../constants/cartConstants";
 
 
 export const login = (email, password) => async (dispatch) => {

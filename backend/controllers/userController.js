@@ -81,8 +81,7 @@ const registerUser = asyncHandler(async (req, res) => {
                 .catch((error) => {
                     console.error(error)
                 })
-            //req.send('success', 'Thanks for registering. Please check your email to verify your account.')
-            res.redirect('/')
+            res.redirect('/login')
         } catch (error) {
             console.log(error)
             //req.send('error', 'Something went wrong. Please try again later or contact us at abyproshopfromtwilio@gmail.com for assistance')

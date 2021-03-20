@@ -81,7 +81,7 @@ const registerUser = asyncHandler(async (req, res) => {
                 .catch((error) => {
                     console.error(error)
                 })
-            res.redirect('/login')
+            res.redirect('/')
         } catch (error) {
             console.log(error)
             //req.send('error', 'Something went wrong. Please try again later or contact us at abyproshopfromtwilio@gmail.com for assistance')

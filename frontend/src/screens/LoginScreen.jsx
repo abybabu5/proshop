@@ -20,10 +20,10 @@ const LoginScreen = ({ location, history }) => {
     const redirect = location.search ? location.search.split('=')[1] : '/'
 
     useEffect(() => {
-        if (userInfo && userInfo.name && userInfo.isVerified) {
+        if (userInfo && userInfo.name) {
             history.push(redirect)
         }
-        else {
+        if(userInfo && userInfo.isVerified) {
          Swal({
              title: "PROSHOP WELCOMES YOU",
              text: "Please verify your email!",

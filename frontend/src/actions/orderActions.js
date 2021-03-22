@@ -16,7 +16,7 @@ import {
     ORDER_LIST_FAIL,
     ORDER_DELIVER_REQUEST,
     ORDER_DELIVER_SUCCESS,
-    ORDER_DELIVER_FAIL, ORDER_CREATE_RESET,
+    ORDER_DELIVER_FAIL,
 } from '../constants/orderConstants'
 import axios from "axios";
 

@@ -6,16 +6,18 @@ import {login} from "../actions/userActions";
 import FormContainer from "../components/FormContainer";
 import {Button, Col, Form, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
-import Swal from 'sweetalert2';
+import SweetAlert from 'sweetalert2-react';
 
-const LoginScreen = ({ location, history }) => {
+const LoginScreen = ({location, history}) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [show, setShow] = useState(false)
+
 
     const dispatch = useDispatch()
 
     const userLogin = useSelector((state => state.userLogin))
-    const { loading, error, userInfo } = userLogin
+    const {loading, error, userInfo} = userLogin
 
     const redirect = location.search ? location.search.split('=')[1] : '/'
 
@@ -23,24 +25,22 @@ const LoginScreen = ({ location, history }) => {
         if (userInfo && userInfo.name) {
             history.push(redirect)
         }
-        if(userInfo && userInfo.isVerified) {
-         Swal({
-             title: "PROSHOP WELCOMES YOU",
-             text: "Please verify your email!",
-             dangerMode: true,
-         })
-        }
     }, [history, userInfo, redirect])
 
     const submitHandler = (e) => {
         e.preventDefault()
         dispatch(login(email, password))
-
+        setShow(true);
     }
     return (
         <FormContainer>
             <h1>Sign In</h1>
-            {error && <Message variant='danger'>{error}</Message>}
+            {error && <div> <SweetAlert
+                error
+                show={show}
+                title="PROSHOP 'Error'"
+                text={error}
+                dangerMode={true} onConfirm={() => setShow(false)}/> <Message variant='danger'>{error}</Message></div>}
             {loading && <Loader/>}
             <Form onSubmit={submitHandler}>
                 <Form.Group controlId='email'>
@@ -59,7 +59,7 @@ const LoginScreen = ({ location, history }) => {
                         placeHolder='Enter password'
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                   />
+                    />
                 </Form.Group>
                 <Button type='submit' variant='primary'>
                     Sign In

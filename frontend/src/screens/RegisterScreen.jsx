@@ -6,7 +6,7 @@ import {register} from "../actions/userActions";
 import FormContainer from "../components/FormContainer";
 import {Button, Col, Form, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
-import VerifyEmailScreen from "./VerifyEmailScreen";
+
 
 const RegisterScreen = ({ location, history }) => {
     const [name, setName] = useState('')

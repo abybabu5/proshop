@@ -6,6 +6,7 @@ import {register} from "../actions/userActions";
 import FormContainer from "../components/FormContainer";
 import {Button, Col, Form, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
+import VerifyEmailScreen from "./VerifyEmailScreen";
 
 const RegisterScreen = ({ location, history }) => {
     const [name, setName] = useState('')
@@ -14,6 +15,7 @@ const RegisterScreen = ({ location, history }) => {
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [message, setMessage] = useState(null)
+    const [showModal, setShowModal] = useState(false);
 
     const dispatch = useDispatch()
 
@@ -33,6 +35,7 @@ const RegisterScreen = ({ location, history }) => {
         if (password !== confirmPassword) {
             setMessage('Password do not match!')
         } else {
+            setShowModal(true)
             dispatch(register(name, surname, email, password))
         }
 

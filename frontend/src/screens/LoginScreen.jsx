@@ -6,7 +6,6 @@ import {login} from "../actions/userActions";
 import FormContainer from "../components/FormContainer";
 import {Button, Col, Form, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
-import LoaderPayment from "../loaders/LoaderPayment";
 
 const LoginScreen = ({ location, history }) => {
     const [email, setEmail] = useState('')

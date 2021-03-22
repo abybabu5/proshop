@@ -1,13 +1,15 @@
 import React from 'react';
-import {Button} from "@material-ui/core";
+import {Modal} from "react-bootstrap";
 
 const VerifyEmailScreen = () => {
 
     return (
-        <div>
-            <h1>Welcome to Aby's Proshop. Click the button bellow to enjoy Virtual Shopping Experience</h1>
-            <Button> Click me 🎉🎉 </Button>
-        </div>
+        <>
+            <Modal show={true} className="d-flex align-items-center justify-content-center" >
+                <Modal.Title className='text-center'>PROSHOP</Modal.Title>
+                <Modal.Body>Welcome to Aby's Proshop. We have sent you an email with the link. Please verify the link and activate your account.</Modal.Body>
+            </Modal>
+        </>
     );
 }
 

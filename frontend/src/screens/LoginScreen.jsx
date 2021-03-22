@@ -6,6 +6,7 @@ import {login} from "../actions/userActions";
 import FormContainer from "../components/FormContainer";
 import {Button, Col, Form, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
+import swal from 'sweetalert';
 
 const LoginScreen = ({ location, history }) => {
     const [email, setEmail] = useState('')
@@ -19,10 +20,17 @@ const LoginScreen = ({ location, history }) => {
     const redirect = location.search ? location.search.split('=')[1] : '/'
 
     useEffect(() => {
-        if (userInfo && userInfo.name) {
+        if (userInfo && userInfo.name && userInfo.isVerified) {
             history.push(redirect)
         }
+        else {
+         swal({
+             title: "PROSHOP WELCOMES YOU",
+             text: "Please verify your email!",
+         })
+        }
     }, [history, userInfo, redirect])
+
     const submitHandler = (e) => {
         e.preventDefault()
         dispatch(login(email, password))

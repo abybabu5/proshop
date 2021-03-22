@@ -70,6 +70,7 @@ export const register = (name, surname, email, password) => async (dispatch) => 
             type: USER_REGISTER_SUCCESS,
             payload: data,
         })
+        localStorage.setItem('userInfo', JSON.stringify(data))
         dispatch({
             type: USER_LOGIN_SUCCESS,
             payload: data,

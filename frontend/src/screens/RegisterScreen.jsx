@@ -15,27 +15,25 @@ const RegisterScreen = ({ location, history }) => {
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [message, setMessage] = useState(null)
-    const [showModal, setShowModal] = useState(false);
 
     const dispatch = useDispatch()
 
     const userRegister = useSelector((state => state.userRegister))
     const { loading, error, userInfo } = userRegister
 
-    const redirect = location.search ? location.search.split('=')[1] : '/verify-email'
+    const redirect = location.search ? location.search.split('=')[1] : '/'
 
     useEffect(() => {
         if (userInfo) {
-            history.push(redirect)
+            history.push('/verify-email')
         }
-    }, [history, userInfo, redirect])
+    }, [history, userInfo])
 
     const submitHandler = (e) => {
         e.preventDefault()
         if (password !== confirmPassword) {
             setMessage('Password do not match!')
         } else {
-            setShowModal(true)
             dispatch(register(name, surname, email, password))
         }
 

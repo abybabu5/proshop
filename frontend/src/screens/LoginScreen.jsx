@@ -6,7 +6,7 @@ import {login} from "../actions/userActions";
 import FormContainer from "../components/FormContainer";
 import {Button, Col, Form, Row} from "react-bootstrap";
 import {Link} from "react-router-dom";
-import swal from 'sweetalert';
+import Swal from 'sweetalert2';
 
 const LoginScreen = ({ location, history }) => {
     const [email, setEmail] = useState('')
@@ -24,9 +24,10 @@ const LoginScreen = ({ location, history }) => {
             history.push(redirect)
         }
         else {
-         swal({
+         Swal({
              title: "PROSHOP WELCOMES YOU",
              text: "Please verify your email!",
+             dangerMode: true,
          })
         }
     }, [history, userInfo, redirect])

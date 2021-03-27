@@ -164,8 +164,10 @@ const deleteReview = asyncHandler(async (req, res) => {
             res.status(404)
             throw  new Error('Product not found')
         }
+    }else {
+        res.status(404)
+        throw  new Error('Product not found')
     }
-    res.status(500).send("ERROR")
 })
 
 

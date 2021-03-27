@@ -2,17 +2,26 @@ import React, {useState, useEffect} from 'react'
 import {Link} from "react-router-dom"
 import {useDispatch, useSelector} from 'react-redux'
 import {Button, Card, Col, Image, ListGroup, Row, Form} from "react-bootstrap"
-import {listProductDetails, createProductReview, productReviewDelete} from '../actions/productActions'
+import {
+    listProductDetails,
+    createProductReview,
+    productReviewDelete,
+    productReviewRemove
+} from '../actions/productActions'
 import Rating from '../components/Rating'
 import Loader from "../loaders/Loader";
 import Message from "../components/Message";
 import Meta from '../components/Meta'
-import {PRODUCT_CREATE_REVIEW_RESET, PRODUCT_REVIEW_DELETE_SUCCESS} from "../constants/productConstants"
+import {
+    PRODUCT_CREATE_REVIEW_RESET,
+    PRODUCT_REVIEW_DELETE_REQUEST, PRODUCT_REVIEW_DELETE_RESET,
+    PRODUCT_REVIEW_DELETE_SUCCESS
+} from "../constants/productConstants"
 import {addToWishList, removeFromWishList} from "../actions/wishListActions";
 
 
-
 const ProductScreen = ({history, match}) => {
+
     const [qty, setQty] = useState(1)
     const [rating, setRating] = useState(0)
     const [comment, setComment] = useState('')
@@ -28,6 +37,9 @@ const ProductScreen = ({history, match}) => {
     const productReviewCreate = useSelector((state) => state.productReviewCreate)
     const {success: successProductReview, error: errorProductReview} = productReviewCreate
 
+    const productReviewDelete = useSelector((state) => state.productReviewDelete)
+    const {success: successProductReviewDelete, error: errorProductReviewDelete} = productReviewDelete
+
     const wishlistStore = useSelector(state => state.productWishList)
     const {wishlist} = wishlistStore;
 
@@ -38,10 +50,15 @@ const ProductScreen = ({history, match}) => {
             setComment('')
             dispatch({type: PRODUCT_CREATE_REVIEW_RESET})
         }
+        if (successProductReviewDelete) {
+            alert('Review Deleted')
+            dispatch({type: PRODUCT_REVIEW_DELETE_RESET})
+
+        }
 
         setTimeout(() => window.scrollTo({top: 0, behavior: "smooth"}),
             dispatch(listProductDetails(match.params.id)), 100);
-    }, [dispatch, match, successProductReview])
+    }, [dispatch, match, successProductReview, successProductReviewDelete])
 
 
     useEffect(() => {
@@ -63,11 +80,9 @@ const ProductScreen = ({history, match}) => {
         e.preventDefault()
         dispatch(createProductReview(match.params.id, {rating, comment}))
     }
-    const reviewEditHandler = () => {
 
-    }
     const reviewDeleteHandler = (e) => {
-        dispatch(productReviewDelete(match.params.id))
+        dispatch(productReviewRemove(match.params.id))
     }
 
     const checkWishList = () => {
@@ -189,8 +204,8 @@ const ProductScreen = ({history, match}) => {
                                                         <p>{review.createdAt.substring(0, 10)}</p>
                                                         <p>{review.comment}</p></div>
                                                     {review.user && userInfo._id === review.user._id && <div>
-                                                        <span style={{margin:'5px', cursor:'pointer'}} onClick={reviewEditHandler}><i className='fas fa-edit '/></span>
-                                                        <span style={{margin:'5px', cursor:'pointer'}} onClick={reviewDeleteHandler}><i className='fas fa-trash'/></span>
+                                                        <span style={{margin:'5px', cursor:'pointer'}} onClick={() => document.getElementById('comment').scrollIntoView({behavior: 'smooth'})}><i className='fas fa-edit '/></span>
+                                                        {userInfo.isAdmin &&<span style={{margin:'5px', cursor:'pointer'}} onClick={reviewDeleteHandler}><i className='fas fa-trash'/></span>}
                                                     </div>}
                                                 </div>
                                             </ListGroup.Item>
@@ -212,7 +227,7 @@ const ProductScreen = ({history, match}) => {
                                                         <option value="5">5 - Excellent</option>
                                                     </Form.Control>
                                                 </Form.Group>
-                                                <Form.Group controlId='comment'>
+                                                <Form.Group controlId='comment' id='comment'>
                                                     <Form.Label>Comment</Form.Label>
                                                     <Form.Control as='textarea' row='3' value={comment}
                                                                   onChange={(e) => setComment(e.target.value)}

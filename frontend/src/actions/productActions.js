@@ -174,7 +174,7 @@ export const createProductReview = (productId, review ) => async (dispatch, getS
 }
 
 
-export const productReviewDelete = (productId) => async (dispatch, getState) => {
+export const productReviewRemove = (productId) => async (dispatch, getState) => {
     try {
         dispatch({
             type: PRODUCT_REVIEW_DELETE_REQUEST

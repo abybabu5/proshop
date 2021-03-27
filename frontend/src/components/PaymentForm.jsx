@@ -9,7 +9,7 @@ import {payOrder} from "../actions/orderActions";
 const PaymentForm = ({ history }) => {
 
     const [success, setSuccess] = useState(false)
-    const [setProcessing] = useState("");
+    const [processing, setProcessing] = useState("");
 
     const stripe = useStripe()
     const elements = useElements()

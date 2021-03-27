@@ -2,13 +2,14 @@ import React, {useState, useEffect} from 'react'
 import {Link} from "react-router-dom"
 import {useDispatch, useSelector} from 'react-redux'
 import {Button, Card, Col, Image, ListGroup, Row, Form} from "react-bootstrap"
-import {listProductDetails, createProductReview} from '../actions/productActions'
+import {listProductDetails, createProductReview, productReviewDelete} from '../actions/productActions'
 import Rating from '../components/Rating'
 import Loader from "../loaders/Loader";
 import Message from "../components/Message";
 import Meta from '../components/Meta'
-import {PRODUCT_CREATE_REVIEW_RESET} from "../constants/productConstants"
+import {PRODUCT_CREATE_REVIEW_RESET, PRODUCT_REVIEW_DELETE_SUCCESS} from "../constants/productConstants"
 import {addToWishList, removeFromWishList} from "../actions/wishListActions";
+
 
 
 const ProductScreen = ({history, match}) => {
@@ -20,6 +21,7 @@ const ProductScreen = ({history, match}) => {
 
     const productDetails = useSelector((state) => state.productDetails)
     const {loading, error, product} = productDetails
+
     const userLogin = useSelector((state) => state.userLogin)
     const {userInfo} = userLogin
 
@@ -45,7 +47,7 @@ const ProductScreen = ({history, match}) => {
     useEffect(() => {
         console.log(productDetails)
         if (productDetails.product.reviews && userInfo && userInfo._id) {
-            const myReview = productDetails.product.reviews.find((r) => userInfo._id === r.user);
+            const myReview = productDetails.product.reviews.find((r) => r.user && userInfo._id === r.user._id);
             if (myReview) {
                 setRating(myReview.rating);
                 setComment(myReview.comment);
@@ -64,8 +66,8 @@ const ProductScreen = ({history, match}) => {
     const reviewEditHandler = () => {
 
     }
-    const reviewDeleteHandler = () => {
-        // dispatch(deleteProductReview())
+    const reviewDeleteHandler = (e) => {
+        dispatch(productReviewDelete(match.params.id))
     }
 
     const checkWishList = () => {
@@ -178,22 +180,21 @@ const ProductScreen = ({history, match}) => {
                                     <h2>Reviews</h2>
                                     {product.reviews.length === 0 && <Message>No Reviews</Message>}
                                     <ListGroup variant='flush'>
-                                        {product.reviews.map(review => (
+                                        {product.reviews.map(review => review.user !== null ? (
                                             <ListGroup.Item key={review._id}>
                                                 <div style={{display:'flex', flexDirection:'row', justifyContent: "space-between"}} >
                                                     <div>
-                                                        <strong>{review.name}</strong>
+                                                        <strong>{review.user.name} {review.user.surname}</strong>
                                                         <Rating value={review.rating}/>
                                                         <p>{review.createdAt.substring(0, 10)}</p>
                                                         <p>{review.comment}</p></div>
-                                                    {userInfo &&
-                                                    <div>
+                                                    {review.user && userInfo._id === review.user._id && <div>
                                                         <span style={{margin:'5px', cursor:'pointer'}} onClick={reviewEditHandler}><i className='fas fa-edit '/></span>
                                                         <span style={{margin:'5px', cursor:'pointer'}} onClick={reviewDeleteHandler}><i className='fas fa-trash'/></span>
                                                     </div>}
                                                 </div>
                                             </ListGroup.Item>
-                                        ))}
+                                            ):null)}
                                         <ListGroup.Item>
                                             <h2>Write a customer review</h2>
                                             {errorProductReview &&

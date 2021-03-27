@@ -24,7 +24,7 @@ const getProducts = asyncHandler(async (req, res) => {
 //@route GET /api/products/:id
 //@access Public
 const getProductById = asyncHandler(async (req, res) => {
-    const product = await Product.findById(req.params.id)
+    const product = await Product.findById(req.params.id).populate('reviews.user', 'name email surname')
     if (product) {
         res.json(product)
     } else {
@@ -99,9 +99,8 @@ const createProductReview = asyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id)
     if (product) {
         let alreadyReviewed = product.reviews.findIndex(r => r.user.toString() === req.user._id.toString())
-        if (alreadyReviewed>=0) {
+        if (alreadyReviewed >= 0) {
             const review = {
-                name: req.user.name,
                 rating: Number(rating),
                 comment,
                 user: req.user._id
@@ -110,17 +109,16 @@ const createProductReview = asyncHandler(async (req, res) => {
             product.save();
             res.status(201).json({message: 'Review changed'})
         } else {
-        const review = {
-            name: req.user.name,
-            rating: Number(rating),
-            comment,
-            user: req.user._id
-        }
-        product.reviews.push(review)
-        product.numReviews = product.reviews.length
-        product.rating = product.reviews.reduce((acc, item) => item.rating + acc, 0) / product.reviews.length
-        await product.save()
-        res.status(201).json({message: 'Review added'})
+            const review = {
+                rating: Number(rating),
+                comment,
+                user: req.user._id
+            }
+            product.reviews.push(review)
+            product.numReviews = product.reviews.length
+            product.rating = product.reviews.reduce((acc, item) => item.rating + acc, 0) / product.reviews.length
+            await product.save()
+            res.status(201).json({message: 'Review added'})
         }
     } else {
         res.status(404)
@@ -137,17 +135,15 @@ const updateProductReview = asyncHandler(async (req, res) => {
     if (product) {
         const review = product.reviews.find(r => r.user.toString() === req.user._id.toString())
         if (review) {
-            review.name = req.user.name,
-            review.rating = req.body.rating,
-            review.comment = req.body.comment
+                review.rating = req.body.rating,
+                review.comment = req.body.comment
             await product.save();
             res.status(200).send().json({message: 'Review updated'})
-        }
-        else {
+        } else {
             res.status(404)
             throw new Error('Review not found')
         }
-    }  else {
+    } else {
         res.status(404)
         throw new Error('Product not found')
     }

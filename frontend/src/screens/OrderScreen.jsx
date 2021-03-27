@@ -1,21 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from "react-redux";
+import React, {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from "react-redux";
 import Loader from "../loaders/Loader";
 import {Button, Card, Col, Image, ListGroup, Row} from "react-bootstrap";
 import Message from "../components/Message";
 import {Link} from "react-router-dom";
-import { getOrderDetails, payOrder, deliverOrder } from '../actions/orderActions'
+import {getOrderDetails, payOrder, deliverOrder} from '../actions/orderActions'
 import axios from "axios";
 import {PayPalButton} from "react-paypal-button-v2";
 import {ORDER_PAY_RESET, ORDER_DELIVER_RESET, ORDER_CREATE_RESET} from "../constants/orderConstants";
-import {resetCart} from '../actions/cartActions';
+import {resetCart, savePaymentMethod} from '../actions/cartActions';
 import LoaderPayment from "../loaders/LoaderPayment";
+import StripeContainer from "../components/StripeContainer";
 
 
-const OrderScreen = ({match, history }) => {
+
+const OrderScreen = ({match, history}) => {
     const orderId = match.params.id
 
     const [sdkReady, setSdkReady] = useState(false)
+    const [showItem, setShowItem] = useState(false)
 
     const dispatch = useDispatch()
 
@@ -29,7 +32,7 @@ const OrderScreen = ({match, history }) => {
     const {loading: loadingDeliver, success: successDeliver} = orderDeliver
 
     const userLogin = useSelector((state) => state.userLogin)
-    const { userInfo } = userLogin
+    const {userInfo} = userLogin
 
     if (!loading) {
         //Calculate price
@@ -45,7 +48,7 @@ const OrderScreen = ({match, history }) => {
 
 
     useEffect(() => {
-        if(!userInfo) {
+        if (!userInfo) {
             history.push('/login')
         }
         if (order && orderId !== order._id) {
@@ -58,7 +61,7 @@ const OrderScreen = ({match, history }) => {
             script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`
             script.async = true
             script.onload = () => {
-                 setSdkReady(true)
+                setSdkReady(true)
             }
             document.body.appendChild(script)
         }
@@ -76,6 +79,7 @@ const OrderScreen = ({match, history }) => {
         }
     }, [dispatch, orderId, successPay, successDeliver, order, history, userInfo])
 
+
     const successPaymentHandler = (paymentResult) => {
         dispatch(payOrder(orderId, paymentResult))
         dispatch(resetCart())
@@ -91,7 +95,7 @@ const OrderScreen = ({match, history }) => {
                 <ListGroup variant='flush'>
                     <ListGroup.Item>
                         <h2>Shipping</h2>
-                        <p><strong>Name: </strong> {order.user.name}</p>
+                        <p><strong>Name: </strong> {order.user.name} {order.user.surname}</p>
                         <p><strong>Email: </strong><a href={`mailto:${order.user.email}`
                         }>{order.user.email}</a></p>
                         <p>
@@ -179,13 +183,17 @@ const OrderScreen = ({match, history }) => {
                                 <Col>${order.totalPrice}</Col>
                             </Row>
                         </ListGroup.Item>
-                        {!order.isPaid && (
-                            <ListGroup.Item>
+                        {!order.isPaid && order.paymentMethod === 'PayPal' && (
+                             <ListGroup.Item>
                                 {loadingPay && <Loader/>}
                                 {!sdkReady ? <Loader/> : (
                                     <PayPalButton amount={order.totalPrice} onSuccess={successPaymentHandler}/>)}
+
                             </ListGroup.Item>
                         )}
+                        {!order.isPaid && order.paymentMethod === 'Stripe' && <ListGroup.Item>
+                            <StripeContainer />
+                            </ListGroup.Item>}
                         {loadingDeliver && <Loader/>}
                         {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
                             <ListGroup.Item>

@@ -16,19 +16,19 @@ const authUser = asyncHandler(async (req, res) => {
     const {email, password} = req.body
     const user = await User.findOne({email})
     if (user && (await user.matchPassword(password))) {
-       if (user.isVerified) {
-        res.json({
-            _id: user._id,
-            name: user.name,
-            surname: user.surname,
-            email: user.email,
-            isAdmin: user.isAdmin,
-            token: generateToken(user._id)
-        })}
-       else {
-           res.status(401)
-           throw new Error('Please verify your email')
-       }
+        if (user.isVerified) {
+            res.json({
+                _id: user._id,
+                name: user.name,
+                surname: user.surname,
+                email: user.email,
+                isAdmin: user.isAdmin,
+                token: generateToken(user._id)
+            })
+        } else {
+            res.status(401)
+            throw new Error('Please verify your email')
+        }
     } else {
         res.status(401)
         throw new Error('Invalid email or password')
@@ -72,11 +72,13 @@ const registerUser = asyncHandler(async (req, res) => {
                 text: `click the following link to activate your Proshop account and enjoy virtual shopping experience
            http://${req.headers.host}/verify-email?token=${user.emailToken}`,
                 html: `
+        <div className='d-flex justify-content-center py-3'>
         <h1>Hello ${user.name}, </h1>
         <p>Thanks for registering on our site</p>
         <p>Please click the link bellow to verify and activate your Proshop account</p>
         <a href="http://abyproshopapp.herokuapp.com/verify-email?token=${user.emailToken}"> Verify your account<a/>
-        <strong> & Enjoy virtual shopping experience 🚀🚀🚀</strong>`
+        <strong> & Enjoy virtual shopping experience 🚀🚀🚀</strong>
+        </div>`
 
             }
             sgMail.send(msg)

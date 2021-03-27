@@ -34,20 +34,21 @@ const PaymentMethodScreen = ({history}) => {
                 <Col>
                     <Form.Check
                         type='radio'
-                        label='PayPal or Credit Card'
+                        label='Credit/ Debit Card'
+                        id='Stripe'
+                        name='paymentMethod'
+                        value='Stripe'
+                        onClick={(e) => setPaymentMethod(e.target.value)}>
+                    </Form.Check>
+                    <Form.Check
+                        type='radio'
+                        label='PayPal'
                         id='PayPal'
                         name='paymentMethod'
                         value='PayPal'
-                    checked onChange={(e) => setPaymentMethod(e.target.value)}>
+                        defaultChecked={true}
+                        onClick={(e) => setPaymentMethod(e.target.value)}>
                     </Form.Check>
-                    {/*<Form.Check*/}
-                    {/*    type='radio'*/}
-                    {/*    label='Stripe'*/}
-                    {/*    id='Stripe'*/}
-                    {/*    name='paymentMethod'*/}
-                    {/*    value='Stripe'*/}
-                    {/*    checked onChange={(e) => setPaymentMethod(e.target.value)}>*/}
-                    {/*</Form.Check>*/}
                 </Col>
                 </Form.Group>
                 <Button type='submit' variant='primary'>

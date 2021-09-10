@@ -7,7 +7,7 @@ import SearchBox from "./SearchBox";
 import {logout} from '../actions/userActions';
 
 
-const Header = () => {
+const Header = ({ sticky }) => {
     const dispatch = useDispatch()
 
     const userLogin = useSelector(state => state.userLogin)
@@ -24,7 +24,7 @@ const Header = () => {
     }
     return (
         <header>
-            <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
+            <Navbar bg="dark" variant="dark" className={sticky ? "navbar navbar-sticky" : "navbar"} sticky="top" expand="lg" collapseOnSelect>
                 <Container>
                     <LinkContainer to='/'>
                         <Navbar.Brand>PROSHOP</Navbar.Brand>

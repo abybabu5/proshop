@@ -20,12 +20,14 @@ import ProductEditScreen from "./screens/ProductEditScreen";
 import OrderListScreen from "./screens/OrderListScreen";
 import WishListScreen from "./screens/WishListScreen";
 import VerifyEmailScreen from "./screens/VerifyEmailScreen";
+import useSticky from "./stickyNav";
 
 const App = () => {
+    const { isSticky, element } = useSticky()
     return (
         <Router>
-            <Header/>
-            <main className='py-3'>
+            <Header sticky={isSticky}/>
+            <div className='py-3' ref={element}>
                 <Container>
                     <Route path='/order/:id' component={OrderScreen}/>
                     <Route path='/shipping' component={ShippingScreen}/>
@@ -61,7 +63,7 @@ const App = () => {
                     />
                     <Route path='/' component={HomeScreen} exact/>
                 </Container>
-            </main>
+            </div>
             <Footer/>
         </Router>
     );

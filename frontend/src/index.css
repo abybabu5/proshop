@@ -62,6 +62,10 @@ h2 {
     display: flex;
 }
 
+.product-img {
+    max-height: 25vh;
+    max-width: 500px;
+}
 /*.product-card:hover {*/
 /*    transform: scale(1.1);*/
 /*    transition: transform 0.2s ease;*/
@@ -244,7 +248,7 @@ Nav.Link {
     position: absolute;
     color: #9c7e31;
     border: 2px solid;
-    padding: 5px;
+    padding: 7px;
     border-radius: 50%;
     min-width: 35px;
     text-align: center;
@@ -253,13 +257,21 @@ Nav.Link {
     cursor: pointer;
     align-items: center;
 }
+.header__cart__icon__product fa-heart {
+    align-items: center;
+}
+.header__cart__icon__product__filled fa-heart {
+    align-items: center;
+    top:50%;
+    right: 50%;
+}
 .header__cart__icon__product__filled {
     position: absolute;
     color: brown;
     border: 2px solid;
-    padding: 5px;
+    padding: 7px;
     border-radius: 50%;
-    min-width: 35px;
+    min-width: 40px;
     text-align: center;
     right: 20px;
     top: 20px;
@@ -377,6 +389,9 @@ button:hover {
     margin: 40px;
     border-radius: 35px;
     display: flex;
+}
+.carousel-indicators li {
+    background-color: black !important;
 }
 @media only screen and (min-width: 321px) and (max-width: 768px) {
     .carousel-caption h2 {
